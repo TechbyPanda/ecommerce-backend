@@ -3,7 +3,6 @@ const router = require('../routes/category.route')
 const mongoose = require('mongoose')
 
 exports.addCategory = async (req, res) => {
-  console.log(req.body)
   let category = new Category({
     name: req.body.name,
     icon: req.body.icon,

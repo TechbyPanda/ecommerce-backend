@@ -8,9 +8,8 @@ function errorHandler(err, req, res, next) {
     // validation error
     return res.status(401).json({message: err});
   }
-
   // default to 500 error
-  return res.status(500).json(err);
+  return res.status(500).json({error: err.message});
 }
 
 module.exports = errorHandler;

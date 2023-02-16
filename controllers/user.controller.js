@@ -25,7 +25,6 @@ exports.addUser = async (req, res) => {
 
 exports.getUser = async (req, res) => {
   const user = await User.findById(req.params.id).select('-passwordHash');
-
   if(!user) {
       res.status(500).json({message: 'The user with the given ID was not found.'})
   } 
@@ -34,7 +33,6 @@ exports.getUser = async (req, res) => {
 
 exports.getAllUser = async (req, res) => {
   const userList = await User.find().select('-passwordHash');
-
   if(!userList) {
       res.status(500).json({success: false})
   } 
@@ -88,6 +86,7 @@ exports.login = async function(req, res) {
     const token = jwt.sign(
       {
         userId: user.id,
+        isAdmin: user.isAdmin
       },
       secret,
       {expiresIn: '1d'}
@@ -96,4 +95,12 @@ exports.login = async function(req, res) {
   }
   else
     res.status(401).send('passwords do not match');
+}
+
+exports.getCount = async (req, res) => {
+  const userCount = await User.count();
+  
+  if(!userCount)
+    res.status(500).json({success: false})
+  res.send({userCount: userCount})
 }

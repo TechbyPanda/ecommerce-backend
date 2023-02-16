@@ -30,10 +30,12 @@ const api = process.env.API_URL
 const categoryRoutes = require('./routes/category.route')
 const productRoutes = require('./routes/product.route')
 const userRoutes = require('./routes/user.route')
+const orders = require('./routes/order.route');
 
+app.use(`${api}/users`,userRoutes)
 app.use(`${api}/categories`, categoryRoutes)
 app.use(`${api}/products`,productRoutes)
-app.use(`${api}/users`,userRoutes)
+app.use(`${api}/orders`, orders);
 
 app.listen(3000, ()=> {
   console.log('server is running')

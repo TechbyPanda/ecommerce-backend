@@ -15,3 +15,27 @@ app.use((err, req, res, next) => {
   }
 })
 ```
+
+# Data for order
+
+```
+    orderItems: [
+      {
+        quantity: 1,
+        product: "6390e9bfc7707a14bf168a2e",
+      },
+      {
+        quantity: 1,
+        product: "6390ea3d0f5ac89fbcb853ef",
+      }
+    ]
+    shippingAddress1: "shipping address 1",
+    shippingAddress2: "shipping address 1",
+    city: "city",
+    zip: "11111",
+    country: "country",
+    phone: "00000000000",
+    status: "Pending",
+    totalPrice: "1000",
+    user: "63a3700668adf74f53105f40"
+```
