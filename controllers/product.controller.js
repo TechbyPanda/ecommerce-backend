@@ -1,16 +1,20 @@
 const Category = require('../models/category.model')
 const Product = require('../models/product.model')
 const mongoose = require('mongoose')
+
 exports.createProduct = async (req, res) => {
   const category = Category.findById(req.body.category)
   if(!category)
     return res.status(400).send('Invalid Category')
 
+  const fileName = req.file.filename
+  const basePath = `${req.protocol}://${req.get('host')}/public/uploads/`
+
   let product = new Product({
     name: req.body.name,
     description: req.body.description,
     richDescription: req.body.richDescription,
-    image: req.body.image,
+    image: `${basePath}${fileName}`,
     brand: req.body.brand,
     price: req.body.price,
     category: req.body.category,
@@ -60,13 +64,24 @@ exports.updateProduct = async (req, res) => {
   if(!category)
     return res.status(400).send('Invalid Category')
 
+  const file = req.file;
+  let imagepath;
+  console.log(req.hostname)
+  if(file){
+    const fileName = req.file.filename
+    const basePath = `${req.protocol}://${req.get('host')}/public/uploads/`
+    imagepath = `${basePath}${fileName}`;
+  }else{
+    imagepath = product.image;
+  }
+
   const product = await Product.findByIdAndUpdate(
     req.params.id,
     {
       name: req.body.name,
       description: req.body.description,
       richDescription: req.body.richDescription,
-      image: req.body.image,
+      image: imagepath,
       brand: req.body.brand,
       price: req.body.price,
       category: req.body.category,
@@ -101,4 +116,32 @@ exports.getCount = async (req, res) => {
   if(!productCount)
     res.status(500).json({success: false})
   res.send({productCount: productCount})
+}
+
+exports.galleryImages = async (req, res) => {
+  if(!mongoose.isValidObjectId(req.params.id)) 
+    return res.status(404).json({status: false, message: "Invalid Product id"});
+
+  const files = req.files;
+  let imagePaths = [];
+  const basePath = `${req.protocol}://${req.get('host')}/public/uploads/`;
+  console.log(files);
+  if(files){
+    files.map(file => {
+      imagePaths.push(`${basePath}${file.filename}`);
+    })
+  }
+
+  const product = await Product.findByIdAndUpdate(
+    req.params.id,
+    {
+      images: imagePaths
+    },
+    {new: true}
+  )
+
+  if(!product)
+    return res.status(404).json({status: false, message: 'Product not found!'})
+
+  return res.status(200).send(product)
 }

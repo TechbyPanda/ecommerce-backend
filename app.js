@@ -17,7 +17,7 @@ app.use(express.json())
 app.use(morgan('tiny'))
 app.use(authJwt());
 app.use(errorHandler);
-
+app.use("/public/uploads", express.static(__dirname + '/public/uploads'))
 mongoose.connect(process.env.CONNECTION_STRING)
 .then(() => {
   console.log("Database Connection is ready...")
