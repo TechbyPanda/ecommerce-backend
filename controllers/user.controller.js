@@ -3,6 +3,7 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
 exports.addUser = async (req, res) => {
+  
   let user = new User({
     name: req.body.name,
     email: req.body.email,
@@ -16,7 +17,7 @@ exports.addUser = async (req, res) => {
     country: req.body.country,
   })
   user = await user.save();
-
+  
   if(!user)
     return res.status(400).send('the user cannot be created!')
 

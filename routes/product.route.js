@@ -1,4 +1,4 @@
-const { createProduct, getAllProducts, getProduct, updateProduct, getFeaturedProduct, getCount, galleryImages } = require('../controllers/product.controller')
+const { createProduct, getAllProducts, getProduct, updateProduct, getFeaturedProduct, getCount, galleryImages, deleteProduct } = require('../controllers/product.controller')
 const multer = require('multer');
 
 const FILE_TYPE_MAP = {
@@ -32,6 +32,7 @@ router.get('/get/count', getCount)
 router.get('/',getAllProducts)
 router.get('/:id',getProduct)
 router.put('/:id',uploadOptions.single('image'), updateProduct)
+router.delete('/:id',deleteProduct);
 router.put('/gallery-images/:id',uploadOptions.array('images', 5),galleryImages)
 
 module.exports = router
